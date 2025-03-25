@@ -38,6 +38,15 @@ class OrbitMenu : Screen(Text.EMPTY) {
             val y = centerY + radius * sin(Math.toRadians(angle)) - 20.0
             button.setPosition(x.roundToInt(), y.roundToInt())
 
+            button.withCallback {
+                if (hasShiftDown()) {
+                    Minecraft.getInstance().schedule { Minecraft.getInstance().setScreen(ConfigurationScreen(Orbit.buttons[index])) }
+                } else {
+                    Orbit.buttons[index].execute()
+                    Minecraft.getInstance().schedule { Minecraft.getInstance().setScreen(null) }
+                }
+            }
+
 
             button.withShape { mouseX, mouseY, width, height ->
                 val dx = mouseX + x - centerX
@@ -86,10 +95,6 @@ class OrbitMenu : Screen(Text.EMPTY) {
         if (keyCode == Orbit.ORBIT.key.value) {
             buttonWidgets.forEachIndexed { index, button ->
                 if (button.isHoveredOrFocused) {
-                    if (modifiers == 1) {
-                        Minecraft.getInstance().setScreen(Minecraft.getInstance().screen.let { ConfigurationScreen(Orbit.buttons[index]) })
-                        return super.keyReleased(keyCode, scanCode, modifiers)
-                    }
                     Orbit.buttons[index].execute()
                 }
             }
