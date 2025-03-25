@@ -1,0 +1,23 @@
+[versions]
+minecraft = "1.21.4"
+kotlin = "2.1.20"
+parchment = "2024.12.07"
+loaderfabric = "0.16.10"
+loaderkotlin = "1.13.2+kotlin.2.1.20"
+fapi = "0.119.2+1.21.4"
+loom = "1.10-SNAPSHOT"
+devauth = "1.2.1"
+olympus = "1.2.0"
+
+[libraries]
+
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+parchment = { module = "org.parchmentmc.data:parchment-1.21.4", version.ref = "parchment" }
+loader-fabric = { module = "net.fabricmc:fabric-loader", version.ref = "loaderfabric" }
+loader-kotlin = { module = "net.fabricmc:fabric-language-kotlin", version.ref = "loaderkotlin" }
+fapi = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fapi" }
+devauth = { module = "me.djtheredstoner:DevAuth-fabric", version.ref = "devauth" }
+olympus = { module = "earth.terrarium.olympus:olympus-fabric-1.21.4", version.ref = "olympus" }
+
+[plugins]
+loom = { id = "fabric-loom", version.ref = "loom" }

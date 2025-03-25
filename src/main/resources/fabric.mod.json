@@ -1,0 +1,34 @@
+{
+  "authors": [
+    "Mayaqq"
+  ],
+  "contact": {
+    "sources": "https://github.com/MayaqqDev/Orbit"
+  },
+  "depends": {
+    "fabricloader": "*",
+    "fabric-language-kotlin": "*",
+    "fabric": "*",
+    "minecraft": "1.21.4"
+  },
+  "description": "Command / Keybind Macro Wheel",
+  "entrypoints": {
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "dev.mayaqq.orbit.Orbit"
+      }
+    ]
+  },
+  "environment": "client",
+  "icon": "assets/orbit/icon.png",
+  "id": "orbit",
+  "license": "LGPL-3.0",
+  "mixins": [
+    "orbit.mixins.json"
+  ],
+  "name": "Orbit",
+  "schemaVersion": 1,
+  "version": "${version}",
+  "accessWidener": "orbit.accesswidener"
+}

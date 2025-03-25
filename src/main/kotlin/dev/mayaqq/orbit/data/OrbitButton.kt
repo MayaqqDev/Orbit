@@ -1,0 +1,49 @@
+package dev.mayaqq.orbit.data
+
+import dev.mayaqq.orbit.Orbit
+import dev.mayaqq.orbit.utils.value
+import net.minecraft.client.Minecraft
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
+
+data class OrbitButton(
+    var iconItem: String = "",
+    var action: OrbitButtonAction = OrbitButtonAction.NONE,
+    var actionString: String = "",
+) {
+    fun item() : ItemStack {
+        BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(iconItem))?.value()?.let {
+            return ItemStack(it)
+        }
+        return Items.BARRIER.defaultInstance
+    }
+
+    fun execute() {
+        when (action) {
+            OrbitButtonAction.NONE -> {}
+            OrbitButtonAction.RUN_COMMAND -> {
+                if (actionString.startsWith("/")) {
+                    actionString = actionString.substring(1)
+                }
+                Minecraft.getInstance().connection?.sendCommand(actionString)
+            }
+            OrbitButtonAction.PRESS_KEY -> {
+                Minecraft.getInstance().options.keyMappings.map { it }.firstOrNull { it.name == actionString }?.let {
+                    it.isDown = true
+                    it.clickCount++
+                    Orbit.scheduled.add(Orbit.ScheduledTask(1) {
+                        it.release()
+                    })
+                }
+            }
+        }
+    }
+}
+
+enum class OrbitButtonAction {
+    NONE,
+    RUN_COMMAND,
+    PRESS_KEY
+}
