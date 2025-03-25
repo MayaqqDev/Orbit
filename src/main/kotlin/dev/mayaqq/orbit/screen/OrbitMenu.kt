@@ -10,6 +10,7 @@ import earth.terrarium.olympus.client.ui.UIConstants
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.Screen
+import org.lwjgl.glfw.GLFW
 import kotlin.math.*
 
 class OrbitMenu : Screen(Text.EMPTY) {
@@ -101,6 +102,17 @@ class OrbitMenu : Screen(Text.EMPTY) {
             Minecraft.getInstance().schedule { Minecraft.getInstance().setScreen(null) }
         }
         return super.keyReleased(keyCode, scanCode, modifiers)
+    }
+
+    override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
+        Minecraft.getInstance().options.keyHotbarSlots.mapIndexed { index, mapping ->
+            if (mapping.key.value == keyCode) {
+                Orbit.buttons[index].execute()
+                Minecraft.getInstance().schedule { Minecraft.getInstance().setScreen(null) }
+                return true
+            }
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers)
     }
 
     override fun isPauseScreen(): Boolean = false
