@@ -87,7 +87,7 @@ class OrbitMenu : Screen(Text.EMPTY) {
             buttonWidgets.forEachIndexed { index, button ->
                 if (button.isHoveredOrFocused) {
                     if (modifiers == 1) {
-                        Minecraft.getInstance().setScreen(Minecraft.getInstance().screen.let { KeybindSelectionScreen(Orbit.buttons[index]) })
+                        Minecraft.getInstance().setScreen(Minecraft.getInstance().screen.let { ConfigurationScreen(Orbit.buttons[index]) })
                         return super.keyReleased(keyCode, scanCode, modifiers)
                     }
                     Orbit.buttons[index].execute()
