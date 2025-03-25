@@ -21,13 +21,16 @@ object OrbitConfig {
             file.createNewFile()
             save()
         } else {
-            val reader = FileReader(file)
-            Orbit.buttons = gson.fromJson(reader, Array<OrbitButton>::class.java)
+            FileReader(file).use {
+                Orbit.buttons = gson.fromJson(it, Array<OrbitButton>::class.java)
+
+            }
         }
     }
 
     fun save() {
-        val writer = FileWriter(file)
-        gson.toJson(Orbit.buttons, writer)
+        FileWriter(file).use {
+            gson.toJson(Orbit.buttons, it)
+        }
     }
 }
