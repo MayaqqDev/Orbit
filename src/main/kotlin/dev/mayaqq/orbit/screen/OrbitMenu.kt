@@ -9,11 +9,9 @@ import earth.terrarium.olympus.client.components.renderers.WidgetRenderers
 import earth.terrarium.olympus.client.ui.UIConstants
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
-import net.minecraft.client.gui.screens.Screen
-import org.lwjgl.glfw.GLFW
 import kotlin.math.*
 
-class OrbitMenu : Screen(Text.EMPTY) {
+class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
 
     var selectedButton: OrbitButton? = null
 
