@@ -34,7 +34,7 @@ class ConfigurationScreen(button: OrbitButton) : OrbitBaseScreen(button, Text.tr
             dropdownState,
             OrbitButtonAction.entries,
             { action ->
-                Text.of(action.name)
+                Text.trans(action.transkey)
             },
             { button -> button.withSize(200, 20) },
             { builder ->
@@ -48,17 +48,17 @@ class ConfigurationScreen(button: OrbitButton) : OrbitBaseScreen(button, Text.tr
         column.withChild(mode)
 
         iconWidget.withSize(200, 20)
-        iconWidget.withPlaceholder("Item ID")
+        iconWidget.withPlaceholder(Text.trans("orbit.option.item_id").string)
         column.withChild(iconWidget)
 
-        actionStringWidget.withPlaceholder("Command / Keybind")
+        actionStringWidget.withPlaceholder(Text.trans("orbit.option.action").string)
         actionStringWidget.withSize(200, 20)
         column.withChild(actionStringWidget)
 
         val keybindButton = button()
         keybindButton.setSize(200, 20)
         keybindButton.withTexture(UIConstants.BUTTON)
-        keybindButton.withRenderer(WidgetRenderers.text<Button>(Text.of("Select Keybind")).withCenterAlignment())
+        keybindButton.withRenderer(WidgetRenderers.text<Button>(Text.trans("orbit.button.select_key")).withCenterAlignment())
         keybindButton.withCallback {
             save()
             McClient.setScreen(KeybindSelectionScreen(orbitButton))

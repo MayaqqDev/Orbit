@@ -42,8 +42,8 @@ data class OrbitButton(
     }
 }
 
-enum class OrbitButtonAction {
-    NONE,
-    RUN_COMMAND,
-    PRESS_KEY
+enum class OrbitButtonAction(val transkey: String) {
+    NONE("orbit.action.none"),
+    RUN_COMMAND("orbit.action.run_command"),
+    PRESS_KEY("orbit.action.press_key")
 }

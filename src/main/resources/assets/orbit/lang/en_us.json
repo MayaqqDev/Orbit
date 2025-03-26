@@ -1,0 +1,10 @@
+{
+  "orbit.screen.configure": "Configure Button",
+  "orbit.screen.keybindselect": "Select Keybind",
+  "orbit.action.none": "None",
+  "orbit.action.run_command": "Run Command",
+  "orbit.action.press_key": "Press Key",
+  "orbit.option.item_id": "Item ID",
+  "orbit.option.action": "Command / Keybind",
+  "orbit.button.select_key": "Select Keybind"
+}
