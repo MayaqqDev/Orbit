@@ -8,5 +8,7 @@
   "orbit.option.action": "Command / Keybind",
   "orbit.button.select_key": "Select Keybind",
   "config.orbit.global": "Global Config",
-  "config.orbit.global.button_count": "Button Count:"
+  "config.orbit.global.button_count": "Button Count:",
+  "key.orbit.orbit": "Orbit Wheel",
+  "key.category.orbit": "Orbit"
 }
