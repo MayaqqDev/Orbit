@@ -1,14 +1,14 @@
 package dev.mayaqq.orbit.screen
 
+import dev.mayaqq.orbit.utils.McClient
 import dev.mayaqq.orbit.utils.press
 import net.minecraft.client.KeyMapping
-import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.Component
 
 open class ControlsPassthroughScreen(name: Component) : Screen(name) {
     private val movementKeys by lazy {
-        val options = Minecraft.getInstance().options
+        val options = McClient.options
 
         listOf(
             options.keyLeft,

@@ -2,6 +2,7 @@ package dev.mayaqq.orbit.screen
 
 import dev.mayaqq.orbit.config.OrbitConfig
 import dev.mayaqq.orbit.data.OrbitButton
+import dev.mayaqq.orbit.utils.McClient
 import earth.terrarium.olympus.client.components.Widgets
 import earth.terrarium.olympus.client.components.renderers.WidgetRenderers
 import earth.terrarium.olympus.client.ui.UIConstants
@@ -17,7 +18,7 @@ abstract class OrbitBaseScreen(val orbitButton: OrbitButton, title: Component) :
     val layout: HeaderAndFooterLayout = HeaderAndFooterLayout(this)
 
     override fun init() {
-        layout.addTitleHeader(this.title, Minecraft.getInstance().font)
+        layout.addTitleHeader(this.title, McClient.font)
 
         populate()
 

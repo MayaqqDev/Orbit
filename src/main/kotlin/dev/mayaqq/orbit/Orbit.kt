@@ -3,6 +3,7 @@ package dev.mayaqq.orbit
 import dev.mayaqq.orbit.config.OrbitConfig
 import dev.mayaqq.orbit.data.OrbitButton
 import dev.mayaqq.orbit.screen.OrbitMenu
+import dev.mayaqq.orbit.utils.McClient
 import net.fabricmc.api.ClientModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -45,8 +46,8 @@ object Orbit : ClientModInitializer, Logger by LoggerFactory.getLogger(MODNAME) 
         }
         ClientTickEvents.END_CLIENT_TICK.register {
             if (ORBIT.isDown) {
-                Minecraft.getInstance().schedule {
-                    Minecraft.getInstance().setScreen(OrbitMenu())
+                McClient.tell {
+                    McClient.setScreen(OrbitMenu())
                 }
             }
         }

@@ -2,6 +2,7 @@ package dev.mayaqq.orbit.screen
 
 import dev.mayaqq.orbit.data.OrbitButton
 import dev.mayaqq.orbit.data.OrbitButtonAction
+import dev.mayaqq.orbit.utils.McClient
 import dev.mayaqq.orbit.utils.Text
 import earth.terrarium.olympus.client.components.Widgets
 import earth.terrarium.olympus.client.components.Widgets.button
@@ -12,7 +13,6 @@ import earth.terrarium.olympus.client.layouts.Layouts
 import earth.terrarium.olympus.client.ui.OverlayAlignment
 import earth.terrarium.olympus.client.ui.UIConstants
 import earth.terrarium.olympus.client.utils.State
-import net.minecraft.client.Minecraft
 
 class ConfigurationScreen(button: OrbitButton) : OrbitBaseScreen(button, Text.trans("orbit.screen.configure")) {
 
@@ -20,16 +20,16 @@ class ConfigurationScreen(button: OrbitButton) : OrbitBaseScreen(button, Text.tr
     private var icon = button.iconItem
     private var actionString = button.actionString
 
-    private val iconState = State<String>.of(icon)
+    private val iconState = State.of(icon)
     private val iconWidget = Widgets.textInput(iconState)
 
-    private val actionStringState = State<String>.of(actionString)
+    private val actionStringState = State.of(actionString)
     private val actionStringWidget = Widgets.textInput(actionStringState)
 
     override fun populate() {
         val column = Layouts.column()
 
-        val dropdownState = DropdownState<OrbitButtonAction>.of<OrbitButtonAction>(action)
+        val dropdownState = DropdownState.of(action)
         val mode = Widgets.dropdown(
             dropdownState,
             OrbitButtonAction.entries,
@@ -61,7 +61,7 @@ class ConfigurationScreen(button: OrbitButton) : OrbitBaseScreen(button, Text.tr
         keybindButton.withRenderer(WidgetRenderers.text<Button>(Text.of("Select Keybind")).withCenterAlignment())
         keybindButton.withCallback {
             save()
-            Minecraft.getInstance().setScreen(KeybindSelectionScreen(orbitButton))
+            McClient.setScreen(KeybindSelectionScreen(orbitButton))
         }
         if (action != OrbitButtonAction.PRESS_KEY) {
             keybindButton.asDisabled()
@@ -76,7 +76,7 @@ class ConfigurationScreen(button: OrbitButton) : OrbitBaseScreen(button, Text.tr
         super.onClose()
     }
 
-    fun save() {
+    private fun save() {
         actionString = actionStringWidget.value
         icon = iconWidget.value
         orbitButton.action = action

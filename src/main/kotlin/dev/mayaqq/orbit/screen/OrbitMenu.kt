@@ -2,12 +2,12 @@ package dev.mayaqq.orbit.screen
 
 import dev.mayaqq.orbit.Orbit
 import dev.mayaqq.orbit.data.OrbitButton
+import dev.mayaqq.orbit.utils.McClient
 import dev.mayaqq.orbit.utils.Text
 import earth.terrarium.olympus.client.components.Widgets
 import earth.terrarium.olympus.client.components.buttons.Button
 import earth.terrarium.olympus.client.components.renderers.WidgetRenderers
 import earth.terrarium.olympus.client.ui.UIConstants
-import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import kotlin.math.*
 
@@ -39,10 +39,10 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
 
             button.withCallback {
                 if (hasShiftDown()) {
-                    Minecraft.getInstance().schedule { Minecraft.getInstance().setScreen(ConfigurationScreen(Orbit.buttons[index])) }
+                    McClient.tell { McClient.setScreen(ConfigurationScreen(Orbit.buttons[index])) }
                 } else {
                     Orbit.buttons[index].execute()
-                    Minecraft.getInstance().schedule { Minecraft.getInstance().setScreen(null) }
+                    McClient.tell { McClient.setScreen(null) }
                 }
             }
 
@@ -86,7 +86,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
         if (!anySelected) selectedButton = null
 
         selectedButton?.let {
-            graphics.drawCenteredString(Minecraft.getInstance().font, Text.trans(it.actionString).string, centerX, centerY, 0xFFFFFF)
+            graphics.drawCenteredString(McClient.font, Text.trans(it.actionString).string, centerX, centerY, 0xFFFFFF)
         }
     }
 
@@ -97,16 +97,16 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
                     Orbit.buttons[index].execute()
                 }
             }
-            Minecraft.getInstance().schedule { Minecraft.getInstance().setScreen(null) }
+            McClient.tell { McClient.setScreen(null) }
         }
         return super.keyReleased(keyCode, scanCode, modifiers)
     }
 
     override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-        Minecraft.getInstance().options.keyHotbarSlots.mapIndexed { index, mapping ->
+        McClient.options.keyHotbarSlots.mapIndexed { index, mapping ->
             if (mapping.key.value == keyCode) {
                 Orbit.buttons[index].execute()
-                Minecraft.getInstance().schedule { Minecraft.getInstance().setScreen(null) }
+                McClient.tell { McClient.setScreen(null) }
                 return true
             }
         }

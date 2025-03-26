@@ -3,13 +3,13 @@ package dev.mayaqq.orbit.screen
 import dev.mayaqq.orbit.config.OrbitConfig
 import java.awt.Color
 import dev.mayaqq.orbit.data.OrbitButton
+import dev.mayaqq.orbit.utils.McClient
 import dev.mayaqq.orbit.utils.Text
 import earth.terrarium.olympus.client.components.Widgets
 import earth.terrarium.olympus.client.components.base.ListWidget
 import earth.terrarium.olympus.client.components.buttons.Button
 import earth.terrarium.olympus.client.components.renderers.WidgetRenderers
 import earth.terrarium.olympus.client.ui.UIConstants
-import net.minecraft.client.Minecraft
 import kotlin.math.min
 
 class KeybindSelectionScreen(orbitButton: OrbitButton) : OrbitBaseScreen(orbitButton, Text.trans("orbit.screen.keybindselect")) {
@@ -20,7 +20,7 @@ class KeybindSelectionScreen(orbitButton: OrbitButton) : OrbitBaseScreen(orbitBu
     override fun populate() {
         list.setSize(min(layout.width, 200), layout.height - layout.headerHeight - layout.footerHeight)
 
-        Minecraft.getInstance().options.keyMappings.forEach {
+        McClient.options.keyMappings.forEach {
             val button = Widgets.button()
             button.setSize(min(layout.width, 200), 20)
             button.withTexture(UIConstants.BUTTON)
@@ -53,6 +53,6 @@ class KeybindSelectionScreen(orbitButton: OrbitButton) : OrbitBaseScreen(orbitBu
 
     override fun onClose() {
         OrbitConfig.save()
-        Minecraft.getInstance().setScreen(ConfigurationScreen(orbitButton))
+        McClient.setScreen(ConfigurationScreen(orbitButton))
     }
 }
