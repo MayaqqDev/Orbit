@@ -51,5 +51,10 @@ object OrbitConfig {
         }
     }
 
+    fun saveAndLoad() {
+        save()
+        load()
+    }
+
     data class Config(var buttonCount: Int = 8)
 }

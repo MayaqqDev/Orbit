@@ -56,7 +56,7 @@ class GlobalConfigScreen(val previousScreen: Screen? = null) : Screen(Text.trans
     override fun onClose() {
         OrbitConfig.CONFIG.buttonCount = slider.value.toInt()
         McClient.setScreen(previousScreen)
-        OrbitConfig.save()
+        OrbitConfig.saveAndLoad()
     }
 
     override fun repositionElements() {
