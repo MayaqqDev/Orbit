@@ -21,7 +21,7 @@ object Orbit : ClientModInitializer, Logger by LoggerFactory.getLogger(MODNAME) 
 
     val scheduled = ConcurrentLinkedQueue<ScheduledTask>()
 
-    var buttons: Array<OrbitButton> = Array<OrbitButton>(8) { OrbitButton() }
+    var buttons: Array<OrbitButton> = Array(OrbitConfig.CONFIG.buttonCount) { OrbitButton() }
 
     val ORBIT: KeyMapping = KeyBindingHelper.registerKeyBinding(
         KeyMapping(

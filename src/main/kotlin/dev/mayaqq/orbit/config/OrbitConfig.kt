@@ -12,25 +12,44 @@ import kotlin.io.path.exists
 object OrbitConfig {
 
     private val config = FabricLoader.getInstance().configDir.resolve("orbit")
-    private val file = config.resolve("config.json").toFile()
+    private val buttons = config.resolve("buttons.json").toFile()
+    private val configFile = config.resolve("config.json").toFile()
     private val gson = GsonBuilder().setPrettyPrinting().create()
+
+    var CONFIG: Config = Config()
 
     fun load() {
         if (!config.exists()) config.createDirectory()
-        if (!file.exists()) {
-            file.createNewFile()
+        if (!configFile.exists()) {
+            configFile.createNewFile()
             save()
         } else {
-            FileReader(file).use {
-                Orbit.buttons = gson.fromJson(it, Array<OrbitButton>::class.java)
-
+            FileReader(configFile).use {
+                val json = gson.fromJson(it, Config::class.java)
+                CONFIG = json
+            }
+        }
+        if (!buttons.exists()) {
+            buttons.createNewFile()
+            save()
+        } else {
+            FileReader(buttons).use {
+                val array = gson.fromJson(it, Array<OrbitButton>::class.java)
+                Orbit.buttons = Array(CONFIG.buttonCount) { index ->
+                    if (index < array.size) array[index] else OrbitButton()
+                }
             }
         }
     }
 
     fun save() {
-        FileWriter(file).use {
+        FileWriter(buttons).use {
             gson.toJson(Orbit.buttons, it)
         }
+        FileWriter(configFile).use {
+            gson.toJson(CONFIG, it)
+        }
     }
+
+    data class Config(var buttonCount: Int = 8)
 }

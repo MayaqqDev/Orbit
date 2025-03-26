@@ -1,6 +1,7 @@
 package dev.mayaqq.orbit.screen
 
 import dev.mayaqq.orbit.Orbit
+import dev.mayaqq.orbit.config.OrbitConfig
 import dev.mayaqq.orbit.data.OrbitButton
 import dev.mayaqq.orbit.utils.McClient
 import dev.mayaqq.orbit.utils.Text
@@ -15,7 +16,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
 
     var selectedButton: OrbitButton? = null
 
-    val buttonWidgets: Array<Button> = Array(8) { Widgets.button() }
+    val buttonWidgets: Array<Button> = Array(OrbitConfig.CONFIG.buttonCount) { Widgets.button() }
 
     override fun init() {
         buttonWidgets.forEachIndexed { index, button ->
@@ -59,7 +60,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
 
                 val angle = (atan2(dy, dx) + 2 * PI) % (2 * PI)
 
-                val correctedAngle = (angle + (PI / 8)) % (2 * PI)
+                val correctedAngle = (angle + (PI / buttonWidgets.size)) % (2 * PI)
 
                 val segmentIndex = (correctedAngle / (2 * PI) * buttonWidgets.size).toInt()
 
