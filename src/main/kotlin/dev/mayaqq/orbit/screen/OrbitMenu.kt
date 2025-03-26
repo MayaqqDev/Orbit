@@ -16,7 +16,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
 
     var selectedButton: OrbitButton? = null
 
-    val buttonWidgets: List<Button> = List(OrbitConfig.CONFIG.buttonCount) { Widgets.button() }
+    val buttonWidgets: List<Button> = List(Orbit.buttons.size) { Widgets.button() }
 
     override fun init() {
         buttonWidgets.forEachIndexed { index, button ->
@@ -26,7 +26,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
                 WidgetRenderers.layered(
                     WidgetRenderers.sprite(UIConstants.BUTTON),
                     WidgetRenderers.center(40, 40) { gr, ctx, _ ->
-                        val item = Orbit.buttons.find { it.index == index }?.item() ?: return@center
+                        val item = Orbit.buttons[index].item()
                         gr.renderItem(item, ctx.x + 12, ctx.y + 12)
                     }
                 ))
@@ -40,7 +40,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
             button.setPosition(x.roundToInt(), y.roundToInt())
 
             button.withCallback {
-                val button = Orbit.buttons.find { it.index == index } ?: return@withCallback
+                val button = Orbit.buttons[index]
                 if (hasShiftDown()) {
                     McClient.tell { McClient.setScreen(ConfigurationScreen(button)) }
                 } else {
@@ -97,7 +97,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
         if (keyCode == Orbit.ORBIT.key.value) {
             buttonWidgets.forEachIndexed { index, button ->
                 if (button.isHoveredOrFocused) {
-                    Orbit.buttons.find { it.index == index }?.execute()
+                    Orbit.buttons[index].execute()
                 }
             }
             onClose()
@@ -108,7 +108,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
     override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
         McClient.options.keyHotbarSlots.mapIndexed { index, mapping ->
             if (mapping.key.value == keyCode) {
-                Orbit.buttons.find { it.index == index }?.execute()
+                Orbit.buttons[index].execute()
                 onClose()
                 return true
             }

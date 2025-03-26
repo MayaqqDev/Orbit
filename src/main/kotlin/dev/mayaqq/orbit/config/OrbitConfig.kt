@@ -17,6 +17,7 @@ object OrbitConfig {
     private val gson = GsonBuilder().setPrettyPrinting().create()
 
     var CONFIG: Config = Config()
+    var BUTTONS: List<OrbitButton> = emptyList()
 
     fun load() {
         if (!config.exists()) config.createDirectory()
@@ -34,22 +35,32 @@ object OrbitConfig {
             save()
         } else {
             FileReader(buttons).use {
-                val array = gson.fromJson(it, Array<OrbitButton>::class.java) ?: emptyArray()
-                Orbit.buttons = array.toMutableList().apply {
-                    while (this.size < CONFIG.buttonCount) {
-                        this.add(OrbitButton(CONFIG.buttonCount - this.size - 1))
-                    }
-                }.take(CONFIG.buttonCount)
+                BUTTONS = gson.fromJson(it, Array<OrbitButton>::class.java).toList()
             }
         }
+
+        // populate BUTTONS with default buttons if it's empty
+        val defaultButtons = List(CONFIG.buttonCount) { OrbitButton(it) }
+        if (BUTTONS.isEmpty()) {
+            BUTTONS = defaultButtons
+        } else if (BUTTONS.size < CONFIG.buttonCount) {
+            BUTTONS = BUTTONS + defaultButtons.subList(BUTTONS.size, CONFIG.buttonCount)
+        }
+        Orbit.buttons = BUTTONS.subList(0, CONFIG.buttonCount)
     }
 
     fun save() {
+        val buttonList = BUTTONS.toMutableList()
+        Orbit.buttons.forEachIndexed { index, button ->
+            buttonList[index] = button
+        }
+        BUTTONS = buttonList
+
         FileWriter(configFile).use {
             gson.toJson(CONFIG, it)
         }
-        FileWriter(buttons).use {
-            gson.toJson(Orbit.buttons, it)
+        FileWriter(buttons).use { writer ->
+            gson.toJson(BUTTONS, writer)
         }
     }
 
