@@ -9,7 +9,6 @@ import earth.terrarium.olympus.client.components.textbox.TextBox
 import earth.terrarium.olympus.client.layouts.Layouts
 import earth.terrarium.olympus.client.ui.UIConstants
 import earth.terrarium.olympus.client.utils.State
-import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.CommonComponents
@@ -32,6 +31,7 @@ class GlobalConfigScreen(val previousScreen: Screen? = null) : Screen(Text.trans
 
         buttonCountWidget.withPlaceholder("8")
         buttonCountWidget.withSize(20, 20)
+        buttonCountWidget.withFilter { it.toIntOrNull() != null }
 
         buttonCountRow.withChild(
             Widgets.text(
