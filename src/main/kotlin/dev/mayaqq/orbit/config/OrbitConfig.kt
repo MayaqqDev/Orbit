@@ -34,10 +34,12 @@ object OrbitConfig {
             save()
         } else {
             FileReader(buttons).use {
-                val array = gson.fromJson(it, Array<OrbitButton>::class.java)
-                Orbit.buttons = Array(CONFIG.buttonCount) { index ->
-                    if (index < array.size) array[index] else OrbitButton()
-                }
+                val array = gson.fromJson(it, Array<OrbitButton>::class.java) ?: emptyArray()
+                Orbit.buttons = array.toMutableList().apply {
+                    while (this.size < CONFIG.buttonCount) {
+                        this.add(OrbitButton(CONFIG.buttonCount - this.size - 1))
+                    }
+                }.take(CONFIG.buttonCount)
             }
         }
     }
