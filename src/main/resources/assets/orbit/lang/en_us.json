@@ -6,5 +6,7 @@
   "orbit.action.press_key": "Press Key",
   "orbit.option.item_id": "Item ID",
   "orbit.option.action": "Command / Keybind",
-  "orbit.button.select_key": "Select Keybind"
+  "orbit.button.select_key": "Select Keybind",
+  "config.orbit.global": "Global Config",
+  "config.orbit.global.button_count": "Button Count:"
 }

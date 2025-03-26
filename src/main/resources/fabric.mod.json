@@ -18,6 +18,12 @@
         "adapter": "kotlin",
         "value": "dev.mayaqq.orbit.Orbit"
       }
+    ],
+    "modmenu": [
+      {
+        "adapter": "kotlin",
+        "value": "dev.mayaqq.orbit.compat.ModMenuCompat"
+      }
     ]
   },
   "environment": "client",

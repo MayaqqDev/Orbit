@@ -43,11 +43,11 @@ object OrbitConfig {
     }
 
     fun save() {
-        FileWriter(buttons).use {
-            gson.toJson(Orbit.buttons, it)
-        }
         FileWriter(configFile).use {
             gson.toJson(CONFIG, it)
+        }
+        FileWriter(buttons).use {
+            gson.toJson(Orbit.buttons, it)
         }
     }
 
