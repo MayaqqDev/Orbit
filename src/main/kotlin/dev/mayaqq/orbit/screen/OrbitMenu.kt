@@ -16,7 +16,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
 
     var selectedButton: OrbitButton? = null
 
-    val buttonWidgets: Array<Button> = Array(OrbitConfig.CONFIG.buttonCount) { Widgets.button() }
+    val buttonWidgets: List<Button> = List(OrbitConfig.CONFIG.buttonCount) { Widgets.button() }
 
     override fun init() {
         buttonWidgets.forEachIndexed { index, button ->
@@ -26,11 +26,12 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
                 WidgetRenderers.layered(
                     WidgetRenderers.sprite(UIConstants.BUTTON),
                     WidgetRenderers.center(40, 40) { gr, ctx, _ ->
-                        gr.renderItem(Orbit.buttons[index].item(), ctx.x + 12, ctx.y + 12)
+                        val item = Orbit.buttons.find { it.index == index }?.item() ?: return@center
+                        gr.renderItem(item, ctx.x + 12, ctx.y + 12)
                     }
                 ))
 
-            val angle = index * (360.0 / buttonWidgets.size)
+            val angle = (index * (360.0 / buttonWidgets.size)) - 90.0
             val radius = 100
             val centerX = width / 2.0
             val centerY = height / 2.0
@@ -39,11 +40,12 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
             button.setPosition(x.roundToInt(), y.roundToInt())
 
             button.withCallback {
+                val button = Orbit.buttons.find { it.index == index } ?: return@withCallback
                 if (hasShiftDown()) {
-                    McClient.tell { McClient.setScreen(ConfigurationScreen(Orbit.buttons[index])) }
+                    McClient.tell { McClient.setScreen(ConfigurationScreen(button)) }
                 } else {
-                    Orbit.buttons[index].execute()
-                    McClient.tell { McClient.setScreen(null) }
+                    button.execute()
+                    onClose()
                 }
             }
 
@@ -58,7 +60,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
 
                 if (distance.toInt() !in innerRadius..outerRadius) return@withShape false
 
-                val angle = (atan2(dy, dx) + 2 * PI) % (2 * PI)
+                val angle = (atan2(dy, dx) + 2 * PI) % (2 * PI) + (PI / 2)
 
                 val correctedAngle = (angle + (PI / buttonWidgets.size)) % (2 * PI)
 
@@ -81,7 +83,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
         buttonWidgets.forEachIndexed { index, button ->
             if (button.isHoveredOrFocused) {
                 anySelected = true
-                selectedButton = Orbit.buttons[index]
+                selectedButton = Orbit.buttons.find { it.index == index }
             }
         }
         if (!anySelected) selectedButton = null
@@ -95,10 +97,10 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
         if (keyCode == Orbit.ORBIT.key.value) {
             buttonWidgets.forEachIndexed { index, button ->
                 if (button.isHoveredOrFocused) {
-                    Orbit.buttons[index].execute()
+                    Orbit.buttons.find { it.index == index }?.execute()
                 }
             }
-            McClient.tell { McClient.setScreen(null) }
+            onClose()
         }
         return super.keyReleased(keyCode, scanCode, modifiers)
     }
@@ -106,8 +108,8 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
     override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
         McClient.options.keyHotbarSlots.mapIndexed { index, mapping ->
             if (mapping.key.value == keyCode) {
-                Orbit.buttons[index].execute()
-                McClient.tell { McClient.setScreen(null) }
+                Orbit.buttons.find { it.index == index }?.execute()
+                onClose()
                 return true
             }
         }
