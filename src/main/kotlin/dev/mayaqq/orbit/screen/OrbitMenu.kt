@@ -83,7 +83,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
         buttonWidgets.forEachIndexed { index, button ->
             if (button.isHoveredOrFocused) {
                 anySelected = true
-                selectedButton = Orbit.buttons.find { it.index == index }
+                selectedButton = Orbit.buttons[index]
             }
         }
         if (!anySelected) selectedButton = null

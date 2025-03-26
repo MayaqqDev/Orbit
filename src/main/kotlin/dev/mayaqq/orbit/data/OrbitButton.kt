@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 
 data class OrbitButton(
-    var index: Int,
     var iconItem: String = "",
     var action: OrbitButtonAction = OrbitButtonAction.NONE,
     var actionString: String = "",

@@ -40,7 +40,7 @@ object OrbitConfig {
         }
 
         // populate BUTTONS with default buttons if it's empty
-        val defaultButtons = List(CONFIG.buttonCount) { OrbitButton(it) }
+        val defaultButtons = List(CONFIG.buttonCount) { OrbitButton() }
         if (BUTTONS.isEmpty()) {
             BUTTONS = defaultButtons
         } else if (BUTTONS.size < CONFIG.buttonCount) {
