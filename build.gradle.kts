@@ -28,6 +28,7 @@ dependencies {
     modImplementation(libs.fapi)
 
     modImplementation(libs.olympus)
+    modImplementation(libs.modmenu)
     include(libs.olympus)
 
     modRuntimeOnly(libs.devauth)
