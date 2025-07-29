@@ -9,7 +9,7 @@
     "fabricloader": "*",
     "fabric-language-kotlin": "*",
     "fabric": "*",
-    "minecraft": "1.21.7"
+    "minecraft": ">=1.21.6"
   },
   "description": "Command / Keybind Macro Wheel",
   "entrypoints": {
