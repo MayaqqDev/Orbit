@@ -1,7 +1,6 @@
 package dev.mayaqq.orbit.screen
 
 import dev.mayaqq.orbit.Orbit
-import dev.mayaqq.orbit.config.OrbitConfig
 import dev.mayaqq.orbit.data.OrbitButton
 import dev.mayaqq.orbit.utils.McClient
 import dev.mayaqq.orbit.utils.Text
@@ -10,6 +9,7 @@ import earth.terrarium.olympus.client.components.buttons.Button
 import earth.terrarium.olympus.client.components.renderers.WidgetRenderers
 import earth.terrarium.olympus.client.ui.UIConstants
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.input.KeyEvent
 import kotlin.math.*
 
 class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
@@ -41,7 +41,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
 
             button.withCallback {
                 val button = Orbit.buttons[index]
-                if (hasShiftDown()) {
+                if (McClient.self.hasShiftDown()) {
                     McClient.tell { McClient.setScreen(ConfigurationScreen(button)) }
                 } else {
                     button.execute()
@@ -93,8 +93,8 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
         }
     }
 
-    override fun keyReleased(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-        if (keyCode == Orbit.ORBIT.key.value) {
+    override fun keyReleased(event: KeyEvent): Boolean {
+        if (event.key == Orbit.ORBIT.key.value) {
             buttonWidgets.forEachIndexed { index, button ->
                 if (button.isHoveredOrFocused) {
                     Orbit.buttons[index].execute()
@@ -102,18 +102,18 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
             }
             onClose()
         }
-        return super.keyReleased(keyCode, scanCode, modifiers)
+        return super.keyReleased(event)
     }
 
-    override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
+    override fun keyPressed(event: KeyEvent): Boolean {
         McClient.options.keyHotbarSlots.mapIndexed { index, mapping ->
-            if (mapping.key.value == keyCode) {
+            if (mapping.key.value == event.key) {
                 Orbit.buttons[index].execute()
                 onClose()
                 return true
             }
         }
-        return super.keyPressed(keyCode, scanCode, modifiers)
+        return super.keyPressed(event)
     }
 
     override fun isPauseScreen(): Boolean = false

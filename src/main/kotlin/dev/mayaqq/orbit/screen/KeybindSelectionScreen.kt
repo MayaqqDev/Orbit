@@ -10,11 +10,12 @@ import earth.terrarium.olympus.client.components.base.ListWidget
 import earth.terrarium.olympus.client.components.buttons.Button
 import earth.terrarium.olympus.client.components.renderers.WidgetRenderers
 import earth.terrarium.olympus.client.ui.UIConstants
+import net.minecraft.client.KeyMapping
 import kotlin.math.min
 
 class KeybindSelectionScreen(orbitButton: OrbitButton) : OrbitBaseScreen(orbitButton, Text.trans("orbit.screen.keybindselect")) {
 
-    private var categoryMap = mutableMapOf<String, MutableList<Button>>()
+    private var categoryMap = mutableMapOf<KeyMapping.Category, MutableList<Button>>()
     val list = ListWidget(min(layout.width, 200), layout.height - layout.headerHeight - layout.footerHeight)
 
     override fun populate() {
@@ -36,7 +37,7 @@ class KeybindSelectionScreen(orbitButton: OrbitButton) : OrbitBaseScreen(orbitBu
         }
 
         categoryMap.forEach { (category, buttons) ->
-            val seperatorWidget = Widgets.text(Text.trans(category).withColor(Color.decode("#D0D1D4").rgb))
+            val seperatorWidget = Widgets.text(Text.EMPTY.append(category.label()).withColor(Color.decode("#D0D1D4").rgb))
             seperatorWidget.setSize(min(layout.width, 200), 15)
             seperatorWidget.withCenterAlignment()
             list.add(seperatorWidget)
