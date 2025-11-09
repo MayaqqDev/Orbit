@@ -10,12 +10,15 @@ import net.minecraft.world.item.Items
 
 data class OrbitButton(
     var iconItem: String = "",
+    var iconType: IconType = IconType.ITEM,
     var action: OrbitButtonAction = OrbitButtonAction.NONE,
     var actionString: String = "",
 ) {
     fun item() : ItemStack {
         BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(iconItem))?.value()?.let {
             return ItemStack(it)
+        } ?: run {
+
         }
         return Items.BARRIER.defaultInstance
     }
@@ -46,4 +49,9 @@ enum class OrbitButtonAction(val transkey: String) {
     NONE("orbit.action.none"),
     RUN_COMMAND("orbit.action.run_command"),
     PRESS_KEY("orbit.action.press_key")
+}
+
+enum class IconType(val transkey: String) {
+    ITEM("orbit.icontype.item"),
+    TEXTURE("orbit.icontype.texture")
 }

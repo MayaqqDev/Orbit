@@ -4,11 +4,13 @@
   "orbit.action.none": "None",
   "orbit.action.run_command": "Run Command",
   "orbit.action.press_key": "Press Key",
-  "orbit.option.item_id": "Item ID",
+  "orbit.option.item_id": "Item ID / Texture",
   "orbit.option.action": "Command / Keybind",
   "orbit.button.select_key": "Select Keybind",
   "config.orbit.global": "Global Config",
   "config.orbit.global.button_count": "Button Count:",
   "key.orbit.orbit": "Orbit Wheel",
-  "key.category.orbit": "Orbit"
+  "key.category.orbit": "Orbit",
+  "orbit.icontype.item": "Item ID",
+  "orbit.icontype.texture": "Texture Location"
 }

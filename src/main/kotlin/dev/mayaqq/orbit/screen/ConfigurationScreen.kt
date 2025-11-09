@@ -1,5 +1,6 @@
 package dev.mayaqq.orbit.screen
 
+import dev.mayaqq.orbit.data.IconType
 import dev.mayaqq.orbit.data.OrbitButton
 import dev.mayaqq.orbit.data.OrbitButtonAction
 import dev.mayaqq.orbit.utils.McClient
@@ -47,9 +48,30 @@ class ConfigurationScreen(button: OrbitButton) : OrbitBaseScreen(button, Text.tr
         )
         column.withChild(mode)
 
-        iconWidget.withSize(200, 20)
+        val iconRow = Layouts.row()
+        iconWidget.withSize(180, 20)
         iconWidget.withPlaceholder(Text.trans("orbit.option.item_id").string)
-        column.withChild(iconWidget)
+        iconRow.withChild(iconWidget)
+        val iconTypeState = DropdownState.of(orbitButton.iconType)
+        val iconType = Widgets.dropdown(
+            iconTypeState,
+            IconType.entries,
+            { action ->
+                Text.trans(action.transkey)
+            },
+            { button -> button.withSize(20, 20) },
+            { builder ->
+                builder.withCallback {
+                    orbitButton.iconType = it
+                    this.rebuildWidgets()
+                }
+                builder.withAlignment(OverlayAlignment.TOP_LEFT)
+                builder.withSize(150, 40)
+            }
+        )
+        iconRow.withChild(iconType)
+        iconRow.arrangeElements()
+        column.withChild(iconRow)
 
         actionStringWidget.withPlaceholder(Text.trans("orbit.option.action").string)
         actionStringWidget.withSize(200, 20)

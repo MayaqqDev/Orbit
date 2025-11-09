@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import net.minecraft.client.KeyMapping
+import net.minecraft.client.Minecraft
 import net.minecraft.resources.ResourceLocation
 import org.lwjgl.glfw.GLFW
 
@@ -48,7 +49,7 @@ object Orbit : ClientModInitializer, Logger by LoggerFactory.getLogger(MODNAME) 
             }
         }
         ClientTickEvents.END_CLIENT_TICK.register {
-            if (ORBIT.isDown) {
+            if (ORBIT.isDown && Minecraft.getInstance().screen == null) {
                 McClient.tell {
                     McClient.setScreen(OrbitMenu())
                 }

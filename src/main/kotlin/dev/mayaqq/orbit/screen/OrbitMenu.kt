@@ -1,6 +1,8 @@
 package dev.mayaqq.orbit.screen
 
+import com.mojang.blaze3d.pipeline.RenderPipeline
 import dev.mayaqq.orbit.Orbit
+import dev.mayaqq.orbit.data.IconType
 import dev.mayaqq.orbit.data.OrbitButton
 import dev.mayaqq.orbit.utils.McClient
 import dev.mayaqq.orbit.utils.Text
@@ -9,7 +11,14 @@ import earth.terrarium.olympus.client.components.buttons.Button
 import earth.terrarium.olympus.client.components.renderers.WidgetRenderers
 import earth.terrarium.olympus.client.ui.UIConstants
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.render.TextureSetup
+import net.minecraft.client.gui.render.state.BlitRenderState
 import net.minecraft.client.input.KeyEvent
+import net.minecraft.client.renderer.RenderPipelines
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
+import net.minecraft.client.resources.model.Material
+import net.minecraft.resources.ResourceLocation
+import org.joml.Matrix3x2f
 import kotlin.math.*
 
 class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
@@ -26,8 +35,44 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
                 WidgetRenderers.layered(
                     WidgetRenderers.sprite(UIConstants.BUTTON),
                     WidgetRenderers.center(40, 40) { gr, ctx, _ ->
-                        val item = Orbit.buttons[index].item()
-                        gr.renderItem(item, ctx.x + 12, ctx.y + 12)
+                        val button = Orbit.buttons[index]
+                        when(button.iconType) {
+                            IconType.ITEM -> {
+                                val item = button.item()
+                                gr.renderItem(item, ctx.x + 12, ctx.y + 12)
+                            }
+                            IconType.TEXTURE -> {
+                                val input = ResourceLocation.parse(button.iconItem)
+                                val texture = ResourceLocation.fromNamespaceAndPath(
+                                    input.namespace,
+                                    buildString {
+                                        if (!input.path.startsWith("textures/")) append("textures/")
+                                        append(input.path)
+                                        if (!input.path.endsWith(".png")) append(".png")
+                                    }
+                                )
+                                gr.pose().pushMatrix()
+                                gr.pose().translate(ctx.x + 12F, ctx.y + 12F)
+                                gr.guiRenderState.submitGuiElement(
+                                    BlitRenderState(
+                                        RenderPipelines.GUI_TEXTURED,
+                                        TextureSetup.singleTexture(McClient.self.textureManager.getTexture(texture).textureView),
+                                        Matrix3x2f(gr.pose()),
+                                        0,
+                                        0,
+                                        16,
+                                        16,
+                                        0f,
+                                        1f,
+                                        0f,
+                                        1f,
+                                        0xFFFFFFFFu.toInt(),
+                                        gr.scissorStack.peek(),
+                                    ),
+                                )
+                                gr.pose().popMatrix()
+                            }
+                        }
                     }
                 ))
 
@@ -75,7 +120,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
     }
 
     override fun render(graphics: GuiGraphics, mouseX: Int, mouseY: Int, f: Float) {
-        super.render(graphics, mouseX, mouseY, f)
+        if (!Orbit.ORBIT.isDown) McClient.tell { McClient.setScreen(null) }
         val centerX = width / 2
         val centerY = height / 2
 
@@ -89,8 +134,15 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
         if (!anySelected) selectedButton = null
 
         selectedButton?.let {
-            graphics.drawCenteredString(McClient.font, Text.trans(it.actionString).string, centerX, centerY, 0xFFFFFF)
+            graphics.drawCenteredString(
+                McClient.font,
+                Text.trans(it.actionString),
+                centerX,
+                centerY,
+                0xFFFFFFFFu.toInt()
+            )
         }
+        super.render(graphics, mouseX, mouseY, f)
     }
 
     override fun keyReleased(event: KeyEvent): Boolean {
