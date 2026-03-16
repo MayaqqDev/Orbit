@@ -13,6 +13,7 @@ repositories {
     maven("https://maven.parchmentmc.org") // Parchment Mappings
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
     maven("https://nexus.resourcefulbees.com/repository/maven-public/") // Olympus
+    maven("https://maven.terraformersmc.com/releases/") // Mod Menu
 }
 
 dependencies {
