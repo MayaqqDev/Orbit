@@ -3,6 +3,7 @@ package dev.mayaqq.orbit.config
 import com.google.gson.GsonBuilder
 import dev.mayaqq.orbit.Orbit
 import dev.mayaqq.orbit.data.OrbitButton
+import dev.mayaqq.orbit.data.OrbitButtonAction
 import net.fabricmc.loader.api.FabricLoader
 import java.io.File
 import java.io.FileReader
@@ -11,6 +12,7 @@ import kotlin.io.path.createDirectory
 import kotlin.io.path.exists
 
 object OrbitConfig {
+    private const val CURRENT_CONFIG_VERSION = 2
 
     private val config = FabricLoader.getInstance().configDir.resolve("orbit")
     private val buttons = config.resolve("buttons.json").toFile()
@@ -24,20 +26,29 @@ object OrbitConfig {
         if (!config.exists()) config.createDirectory()
 
         val (loadedConfig, resetConfig) = readConfig()
+        val shouldMigrateLegacyCommands = loadedConfig.version < CURRENT_CONFIG_VERSION
+        val normalizedVersion = loadedConfig.version.takeIf { it > CURRENT_CONFIG_VERSION } ?: CURRENT_CONFIG_VERSION
         val normalizedButtonCount = loadedConfig.buttonCount.coerceAtLeast(0)
-        CONFIG = loadedConfig.copy(buttonCount = normalizedButtonCount)
+        CONFIG = loadedConfig.copy(version = normalizedVersion, buttonCount = normalizedButtonCount)
 
         val (loadedButtons, resetButtons) = readButtons()
+        val migratedButtons = migrateButtons(loadedButtons, shouldMigrateLegacyCommands)
 
         val defaultButtons = List(CONFIG.buttonCount) { OrbitButton() }
         BUTTONS = when {
-            loadedButtons.isEmpty() -> defaultButtons
-            loadedButtons.size < CONFIG.buttonCount -> loadedButtons + defaultButtons.subList(loadedButtons.size, CONFIG.buttonCount)
-            else -> loadedButtons
+            migratedButtons.isEmpty() -> defaultButtons
+            migratedButtons.size < CONFIG.buttonCount -> migratedButtons + defaultButtons.subList(migratedButtons.size, CONFIG.buttonCount)
+            else -> migratedButtons
         }
         Orbit.buttons = BUTTONS.subList(0, CONFIG.buttonCount)
 
-        if (resetConfig || resetButtons || normalizedButtonCount != loadedConfig.buttonCount || BUTTONS != loadedButtons) {
+        if (
+            resetConfig ||
+            resetButtons ||
+            normalizedVersion != loadedConfig.version ||
+            normalizedButtonCount != loadedConfig.buttonCount ||
+            BUTTONS != loadedButtons
+        ) {
             save()
         }
     }
@@ -100,5 +111,21 @@ object OrbitConfig {
         FileWriter(file).use(write)
     }
 
-    data class Config(var buttonCount: Int = 8)
+    // Legacy command buttons stored plain text; v2 prefixes them so they still execute as commands.
+    private fun migrateButtons(buttons: List<OrbitButton>, shouldMigrateLegacyCommands: Boolean): List<OrbitButton> {
+        if (!shouldMigrateLegacyCommands) return buttons
+
+        return buttons.map { button ->
+            if (button.action != OrbitButtonAction.RUN_COMMAND) return@map button
+
+            val commandText = button.actionString.trim()
+            if (commandText.isEmpty() || commandText.startsWith("/")) {
+                button
+            } else {
+                button.copy(actionString = "/$commandText")
+            }
+        }
+    }
+
+    data class Config(var version: Int = CURRENT_CONFIG_VERSION, var buttonCount: Int = 8)
 }
