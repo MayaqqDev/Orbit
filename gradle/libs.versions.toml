@@ -1,27 +1,27 @@
 [versions]
-minecraft = "1.21.10"
-kotlin = "2.2.20"
-parchment = "2025.10.12"
-loaderfabric = "0.17.3"
-loaderkotlin = "1.13.6+kotlin.2.2.20"
-fapi = "0.135.0+1.21.10"
-loom = "1.11-SNAPSHOT"
+minecraft = "1.21.11"
+kotlin = "2.3.10"
+parchment = "2025.12.20"
+loaderfabric = "0.18.4"
+loaderkotlin = "1.13.9+kotlin.2.3.10"
+fapi = "0.141.3+1.21.11"
+loom = "1.15.5"
 devauth = "1.2.1"
-olympus = "1.6.1"
-resourcefullib = "3.9.1"
-modmenu = "16.0.0-rc.1"
+olympus = "1.7.1"
+resourcefullib = "3.11.0"
+modmenu = "17.0.0-beta.2"
 
 [libraries]
 
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
-parchment = { module = "org.parchmentmc.data:parchment-1.21.10", version.ref = "parchment" }
+parchment = { module = "org.parchmentmc.data:parchment-1.21.11", version.ref = "parchment" }
 loader-fabric = { module = "net.fabricmc:fabric-loader", version.ref = "loaderfabric" }
 loader-kotlin = { module = "net.fabricmc:fabric-language-kotlin", version.ref = "loaderkotlin" }
 fapi = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fapi" }
 devauth = { module = "me.djtheredstoner:DevAuth-fabric", version.ref = "devauth" }
-olympus = { module = "earth.terrarium.olympus:olympus-fabric-1.21.9", version.ref = "olympus" }
+olympus = { module = "earth.terrarium.olympus:olympus-fabric-1.21.11", version.ref = "olympus" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
-resourcefullib = { module = "com.teamresourceful.resourcefullib:resourcefullib-fabric-1.21.9", version.ref = "resourcefullib" }
+resourcefullib = { module = "com.teamresourceful.resourcefullib:resourcefullib-fabric-1.21.11", version.ref = "resourcefullib" }
 
 [plugins]
 loom = { id = "fabric-loom", version.ref = "loom" }
