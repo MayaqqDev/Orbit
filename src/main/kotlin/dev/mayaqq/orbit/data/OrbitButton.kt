@@ -4,7 +4,7 @@ import dev.mayaqq.orbit.Orbit
 import dev.mayaqq.orbit.utils.value
 import net.minecraft.client.Minecraft
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 
@@ -15,7 +15,7 @@ data class OrbitButton(
     var actionString: String = "",
 ) {
     fun item() : ItemStack {
-        BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(iconItem))?.value()?.let {
+        BuiltInRegistries.ITEM.getOptional(Identifier.parse(iconItem)).value()?.let {
             return ItemStack(it)
         } ?: run {
 
