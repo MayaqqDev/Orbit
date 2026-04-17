@@ -1,6 +1,5 @@
 package dev.mayaqq.orbit.screen
 
-import com.mojang.blaze3d.pipeline.RenderPipeline
 import dev.mayaqq.orbit.Orbit
 import dev.mayaqq.orbit.data.IconType
 import dev.mayaqq.orbit.data.OrbitButton
@@ -15,9 +14,7 @@ import net.minecraft.client.gui.render.TextureSetup
 import net.minecraft.client.gui.render.state.BlitRenderState
 import net.minecraft.client.input.KeyEvent
 import net.minecraft.client.renderer.RenderPipelines
-import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.client.resources.model.Material
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import org.joml.Matrix3x2f
 import kotlin.math.*
 
@@ -42,8 +39,8 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
                                 gr.renderItem(item, ctx.x + 12, ctx.y + 12)
                             }
                             IconType.TEXTURE -> {
-                                val input = ResourceLocation.parse(button.iconItem)
-                                val texture = ResourceLocation.fromNamespaceAndPath(
+                                val input = Identifier.parse(button.iconItem)
+                                val texture = Identifier.fromNamespaceAndPath(
                                     input.namespace,
                                     buildString {
                                         if (!input.path.startsWith("textures/")) append("textures/")
@@ -53,10 +50,15 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
                                 )
                                 gr.pose().pushMatrix()
                                 gr.pose().translate(ctx.x + 12F, ctx.y + 12F)
+
+                                val tex = McClient.self.textureManager.getTexture(texture)
                                 gr.guiRenderState.submitGuiElement(
                                     BlitRenderState(
                                         RenderPipelines.GUI_TEXTURED,
-                                        TextureSetup.singleTexture(McClient.self.textureManager.getTexture(texture).textureView),
+                                        TextureSetup.singleTexture(
+                                            tex.textureView,
+                                            tex.sampler,
+                                        ),
                                         Matrix3x2f(gr.pose()),
                                         0,
                                         0,
