@@ -13,27 +13,24 @@ repositories {
     maven("https://maven.parchmentmc.org") // Parchment Mappings
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
     maven("https://nexus.resourcefulbees.com/repository/maven-public/") // Olympus
+    maven("https://maven.teamresourceful.com/repository/maven-public/")
 }
 
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft(libs.minecraft)
-    mappings(loom.layered {
-        officialMojangMappings()
-        parchment(libs.parchment)
-    })
-    modImplementation(libs.loader.fabric)
-    modImplementation(libs.loader.kotlin)
+    implementation(libs.loader.fabric)
+    implementation(libs.loader.kotlin)
 
-    modImplementation(libs.fapi)
+    implementation(libs.fapi)
 
-    modImplementation(libs.resourcefullib)
+    implementation(libs.resourcefullib)
     include(libs.resourcefullib)
-    modImplementation(libs.olympus)
-    modImplementation(libs.modmenu)
+    implementation(libs.olympus)
+    implementation(libs.modmenu)
     include(libs.olympus)
 
-    modRuntimeOnly(libs.devauth)
+    runtimeOnly(libs.devauth)
 }
 
 tasks.processResources {
@@ -53,7 +50,7 @@ base {
     archivesName.set(project.property("archives_base_name") as String)
 }
 
-val targetJavaVersion = 21
+val targetJavaVersion = 25
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     withSourcesJar()

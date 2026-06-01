@@ -9,7 +9,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.concurrent.ConcurrentLinkedQueue
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper
 import net.minecraft.client.KeyMapping
 import net.minecraft.client.Minecraft
 import net.minecraft.resources.Identifier
@@ -27,7 +27,7 @@ object Orbit : ClientModInitializer, Logger by LoggerFactory.getLogger(MODNAME) 
 
     var buttons: List<OrbitButton> = emptyList()
 
-    val ORBIT: KeyMapping = KeyBindingHelper.registerKeyBinding(
+    val ORBIT: KeyMapping = KeyMappingHelper.registerKeyMapping(
         KeyMapping(
             "key.orbit.orbit",
             GLFW.GLFW_KEY_Y,

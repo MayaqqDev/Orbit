@@ -9,11 +9,11 @@ import earth.terrarium.olympus.client.components.Widgets
 import earth.terrarium.olympus.client.components.buttons.Button
 import earth.terrarium.olympus.client.components.renderers.WidgetRenderers
 import earth.terrarium.olympus.client.ui.UIConstants
-import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.render.TextureSetup
-import net.minecraft.client.gui.render.state.BlitRenderState
 import net.minecraft.client.input.KeyEvent
 import net.minecraft.client.renderer.RenderPipelines
+import net.minecraft.client.renderer.state.gui.BlitRenderState
 import net.minecraft.resources.Identifier
 import org.joml.Matrix3x2f
 import kotlin.math.*
@@ -36,7 +36,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
                         when(button.iconType) {
                             IconType.ITEM -> {
                                 val item = button.item()
-                                gr.renderItem(item, ctx.x + 12, ctx.y + 12)
+                                gr.item(item, ctx.x + 12, ctx.y + 12)
                             }
                             IconType.TEXTURE -> {
                                 val input = Identifier.parse(button.iconItem)
@@ -52,7 +52,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
                                 gr.pose().translate(ctx.x + 12F, ctx.y + 12F)
 
                                 val tex = McClient.self.textureManager.getTexture(texture)
-                                gr.guiRenderState.submitGuiElement(
+                                gr.guiRenderState.addGuiElement(
                                     BlitRenderState(
                                         RenderPipelines.GUI_TEXTURED,
                                         TextureSetup.singleTexture(
@@ -121,7 +121,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
         }
     }
 
-    override fun render(graphics: GuiGraphics, mouseX: Int, mouseY: Int, f: Float) {
+    override fun extractRenderState(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, f: Float) {
         if (!Orbit.ORBIT.isDown) McClient.tell { McClient.setScreen(null) }
         val centerX = width / 2
         val centerY = height / 2
@@ -136,7 +136,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
         if (!anySelected) selectedButton = null
 
         selectedButton?.let {
-            graphics.drawCenteredString(
+            graphics.centeredText(
                 McClient.font,
                 Text.trans(it.actionString),
                 centerX,
@@ -144,7 +144,7 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
                 0xFFFFFFFFu.toInt()
             )
         }
-        super.render(graphics, mouseX, mouseY, f)
+        super.extractRenderState(graphics, mouseX, mouseY, f)
     }
 
     override fun keyReleased(event: KeyEvent): Boolean {
@@ -172,5 +172,5 @@ class OrbitMenu : ControlsPassthroughScreen(Text.EMPTY) {
 
     override fun isPauseScreen(): Boolean = false
 
-    override fun renderBackground(guiGraphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {}
+    override fun extractBackground(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {}
 }
