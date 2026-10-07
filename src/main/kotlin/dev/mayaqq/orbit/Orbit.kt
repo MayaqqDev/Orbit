@@ -49,7 +49,7 @@ object Orbit : ClientModInitializer, Logger by LoggerFactory.getLogger(MODNAME) 
             }
         }
         ClientTickEvents.END_CLIENT_TICK.register {
-            if (ORBIT.isDown && Minecraft.getInstance().screen == null) {
+            if (ORBIT.isDown && McClient.screen == null) {
                 McClient.tell {
                     McClient.setScreen(OrbitMenu())
                 }

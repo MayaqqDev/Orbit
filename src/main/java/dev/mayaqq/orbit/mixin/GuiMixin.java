@@ -5,12 +5,13 @@ import com.llamalad7.mixinextras.sugar.Local;
 import dev.mayaqq.orbit.screen.ControlsPassthroughScreen;
 import net.minecraft.client.InputType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(Minecraft.class)
-public class MinecraftMixin {
+@Mixin(Gui.class)
+public class GuiMixin {
     @WrapWithCondition(
             method = "setScreen",
             at = @At(

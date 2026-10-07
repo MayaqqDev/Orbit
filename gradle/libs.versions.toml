@@ -1,14 +1,14 @@
 [versions]
-minecraft = "26.1"
+minecraft = "26.2"
 kotlin = "2.3.21"
 loaderfabric = "0.19.2"
-loaderkotlin = "1.13.11+kotlin.2.3.21"
-fapi = "0.150.0+26.1.2"
-loom = "1.16-SNAPSHOT"
+loaderkotlin = "1.13.12+kotlin.2.4.0"
+fapi = "0.161.0+26.2"
+loom = "1.18-SNAPSHOT"
 devauth = "1.2.2"
-olympus = "1.8.0"
-resourcefullib = "4.0.1"
-modmenu = "18.0.0-beta.1"
+olympus = "1.9.3"
+resourcefullib = "5.0.4"
+modmenu = "20.0.3"
 
 [libraries]
 
@@ -17,9 +17,9 @@ loader-fabric = { module = "net.fabricmc:fabric-loader", version.ref = "loaderfa
 loader-kotlin = { module = "net.fabricmc:fabric-language-kotlin", version.ref = "loaderkotlin" }
 fapi = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fapi" }
 devauth = { module = "me.djtheredstoner:DevAuth-fabric", version.ref = "devauth" }
-olympus = { module = "earth.terrarium.olympus:olympus-fabric-26.1", version.ref = "olympus" }
+olympus = { module = "earth.terrarium.olympus:olympus-fabric-26.2", version.ref = "olympus" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
-resourcefullib = { module = "com.teamresourceful.resourcefullib:resourcefullib-fabric-26.1", version.ref = "resourcefullib" }
+resourcefullib = { module = "com.teamresourceful.resourcefullib:resourcefullib-fabric-26.2", version.ref = "resourcefullib" }
 
 [plugins]
 loom = { id = "net.fabricmc.fabric-loom", version.ref = "loom" }
