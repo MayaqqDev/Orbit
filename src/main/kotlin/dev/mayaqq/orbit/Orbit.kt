@@ -1,19 +1,18 @@
 package dev.mayaqq.orbit
 
+import com.mojang.blaze3d.platform.InputConstants
 import dev.mayaqq.orbit.config.OrbitConfig
 import dev.mayaqq.orbit.data.OrbitButton
 import dev.mayaqq.orbit.screen.OrbitMenu
 import dev.mayaqq.orbit.utils.McClient
 import net.fabricmc.api.ClientModInitializer
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import java.util.concurrent.ConcurrentLinkedQueue
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper
 import net.minecraft.client.KeyMapping
-import net.minecraft.client.Minecraft
 import net.minecraft.resources.Identifier
-import org.lwjgl.glfw.GLFW
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import java.util.concurrent.ConcurrentLinkedQueue
 
 const val MODID = "orbit"
 const val MODNAME = "Orbit"
@@ -30,7 +29,7 @@ object Orbit : ClientModInitializer, Logger by LoggerFactory.getLogger(MODNAME) 
     val ORBIT: KeyMapping = KeyMappingHelper.registerKeyMapping(
         KeyMapping(
             "key.orbit.orbit",
-            GLFW.GLFW_KEY_Y,
+            InputConstants.KEY_Y,
             CATEGORY
         )
     )
